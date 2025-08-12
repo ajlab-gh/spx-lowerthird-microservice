@@ -1,0 +1,51 @@
+{
+  "description": "DataDash Premium Lowerthird - Professional broadcast quality with Fortinet-inspired colors",
+  "playserver": "OVERLAY",
+  "playduration": "6000",
+  "playcommand": "play",
+  "stopcommand": "stop", 
+  "relpath": "templates/datadash/lowerthird.html",
+  "webplayout": "true",
+  "steps": "2",
+  "out": "manual",
+  "uicolor": "3",
+  "DataFields": [
+    {
+      "field": "f0",
+      "ftype": "textfield",
+      "title": "Main Title",
+      "value": "DataDash",
+      "description": "Primary title text (speaker name, brand, etc.)"
+    },
+    {
+      "field": "f1", 
+      "ftype": "textfield",
+      "title": "Subtitle",
+      "value": "Leading Edge Technology",
+      "description": "Secondary text (position, topic, etc.)"
+    },
+    {
+      "field": "theme",
+      "ftype": "dropdown",
+      "title": "Color Theme",
+      "value": "cloud-blue",
+      "items": "cloud-blue,secure-red,sase-purple,connectivity-yellow",
+      "description": "DataDash color scheme (Fortinet-inspired)"
+    },
+    {
+      "field": "logo",
+      "ftype": "dropdown", 
+      "title": "Logo Style",
+      "value": "dd-intersect",
+      "items": "dd-intersect,dd-side,custom",
+      "description": "Logo display style"
+    },
+    {
+      "field": "duration",
+      "ftype": "number",
+      "title": "Display Duration (seconds)",
+      "value": "6",
+      "description": "How long to display the lowerthird"
+    }
+  ]
+}

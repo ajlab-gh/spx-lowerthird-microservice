@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DataDash Lowerthird</title>
+    <style>
+        /* DataDash Color Variables - Fortinet Inspired */
+        :root {
+            /* Cloud Blue Theme */
+            --primary-color: #307FE2;
+            --secondary-color: #1E5AB4;
+            --accent-color: #C8DCFF;
+            --dark-color: #142850;
+            
+            /* Base Colors */
+            --background-color: #000000;
+            --white-color: #FFFFFF;
+            --text-primary: #FFFFFF;
+            --text-secondary: #C8DCFF;
+            
+            /* Animation Timing */
+            --animation-duration: 2.5s;
+            --ease-curve: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        /* Theme Classes for Different Color Schemes */
+        .theme-secure-red {
+            --primary-color: #DA291C;
+            --secondary-color: #A01E14;
+            --accent-color: #FFB4AA;
+            --dark-color: #500F0A;
+            --text-secondary: #FFB4AA;
+        }
+        
+        .theme-sase-purple {
+            --primary-color: #9063CD;
+            --secondary-color: #644696;
+            --accent-color: #C8B4E6;
+            --dark-color: #281E50;
+            --text-secondary: #C8B4E6;
+        }
+        
+        .theme-connectivity-yellow {
+            --primary-color: #FFB900;
+            --secondary-color: #C89100;
+            --accent-color: #FFE696;
+            --dark-color: #503C00;
+            --text-secondary: #FFE696;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: transparent;
+            overflow: hidden;
+            width: 1920px;
+            height: 1080px;
+        }
+
+        .lowerthird-container {
+            position: absolute;
+            bottom: 150px;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            opacity: 0;
+            transform: translateX(-100%);
+            animation: slideInFade var(--animation-duration) var(--ease-curve) forwards;
+        }
+
+        /* Premium Background Bar */
+        .background-bar {
+            position: absolute;
+            left: 40px;
+            top: 0;
+            width: 650px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border-radius: 16px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.4),
+                0 4px 16px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+        }
+
+        /* Glass Overlay Effect */
+        .glass-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.15) 0%, 
+                rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+        }
+
+        /* Premium Accent Line */
+        .accent-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color) 0%, transparent 100%);
+            border-radius: 16px 16px 0 0;
+        }
+
+        /* Logo Container */
+        .logo-container {
+            position: absolute;
+            left: 60px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 75px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            animation: logoMaterialize 0.8s var(--ease-curve) 0.8s both;
+        }
+
+        /* Intersecting DD Logo */
+        .dd-logo {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dd-logo .d1, .dd-logo .d2 {
+            position: absolute;
+            font-size: 36px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .dd-logo .d1 {
+            color: var(--white-color);
+            left: -3px;
+            top: -2px;
+            z-index: 2;
+        }
+
+        .dd-logo .d2 {
+            color: var(--accent-color);
+            right: -3px;
+            bottom: -2px;
+            z-index: 1;
+        }
+
+        /* Text Container */
+        .text-container {
+            position: absolute;
+            left: 160px;
+            top: 50%;
+            transform: translateY(-50%);
+            max-width: 480px;
+        }
+
+        .title {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--text-primary);
+            margin: 0 0 8px 0;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            animation: textReveal 0.6s var(--ease-curve) 1.2s both;
+        }
+
+        .subtitle {
+            font-size: 32px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin: 0;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            animation: textReveal 0.6s var(--ease-curve) 1.6s both;
+        }
+
+        /* Subtle Background Glow */
+        .ambient-glow {
+            position: absolute;
+            left: 20px;
+            top: -20px;
+            width: 700px;
+            height: 240px;
+            background: radial-gradient(ellipse at center, 
+                rgba(var(--primary-color-rgb), 0.1) 0%, 
+                transparent 70%);
+            border-radius: 50%;
+            filter: blur(30px);
+            animation: glowPulse 3s ease-in-out infinite;
+        }
+
+        /* Animations */
+        @keyframes slideInFade {
+            0% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            60% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes logoMaterialize {
+            0% {
+                opacity: 0;
+                transform: translateY(-50%) scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(-50%) scale(1);
+            }
+        }
+
+        @keyframes textReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        /* Auto-hide after display duration */
+        .lowerthird-container.auto-hide {
+            animation: slideInFade var(--animation-duration) var(--ease-curve) forwards,
+                      fadeOut 1s ease-in 5s forwards;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="lowerthird-container" id="lowerthird">
+        <div class="ambient-glow"></div>
+        
+        <div class="background-bar">
+            <div class="glass-overlay"></div>
+            <div class="accent-line"></div>
+        </div>
+
+        <div class="logo-container">
+            <div class="dd-logo">
+                <span class="d1">D</span>
+                <span class="d2">D</span>
+            </div>
+        </div>
+
+        <div class="text-container">
+            <div class="title" data-field="f0">DataDash</div>
+            <div class="subtitle" data-field="f1">Leading Edge Technology</div>
+        </div>
+    </div>
+
+    <script>
+        // SPX Graphics integration
+        function updateData(templateData) {
+            if (templateData.f0) {
+                document.querySelector('[data-field="f0"]').textContent = templateData.f0;
+            }
+            if (templateData.f1) {
+                document.querySelector('[data-field="f1"]').textContent = templateData.f1;
+            }
+            if (templateData.theme) {
+                document.body.className = `theme-${templateData.theme}`;
+            }
+        }
+
+        function play() {
+            const container = document.getElementById('lowerthird');
+            container.style.animation = 'none';
+            container.offsetHeight; // Force reflow
+            container.style.animation = null;
+        }
+
+        function stop() {
+            const container = document.getElementById('lowerthird');
+            container.style.opacity = '0';
+            container.style.transform = 'translateX(-100%)';
+        }
+
+        // SPX Graphics lifecycle hooks
+        window.SPXGCTemplateDefinition = {
+            "description": "DataDash Premium Lowerthird",
+            "playserver": "OVERLAY",
+            "playduration": "6000",
+            "playcommand": "play",
+            "stopcommand": "stop",
+            "relpath": "templates/datadash/lowerthird.html",
+            "DataFields": [
+                {
+                    "field": "f0",
+                    "ftype": "textfield", 
+                    "title": "Main Title",
+                    "value": "DataDash"
+                },
+                {
+                    "field": "f1",
+                    "ftype": "textfield",
+                    "title": "Subtitle", 
+                    "value": "Leading Edge Technology"
+                },
+                {
+                    "field": "theme",
+                    "ftype": "dropdown",
+                    "title": "Color Theme",
+                    "value": "cloud-blue",
+                    "items": "cloud-blue,secure-red,sase-purple,connectivity-yellow"
+                }
+            ]
+        };
+    </script>
+</body>
+</html>
