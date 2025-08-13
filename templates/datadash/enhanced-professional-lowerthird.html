@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Enhanced Professional Lowerthird</title>
+    <script type="text/javascript" src="../../js/lib/anime.min.js"></script>
+    <script type="text/javascript" src="../../js/spx_interface.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/styles.css" />
+    <link rel="stylesheet" type="text/css" id="DynamicTheme" href="../../themes/DataDash-CloudBlue.css" />
+    <style>
+        .SPXWindow {
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            position: absolute;
+        }
+
+        #gfx {
+            gap: 0;
+            border: 0;
+            opacity: 0; /* animated */
+            z-index: 10;
+            display: flex;
+            bottom: 5vh;
+            position: absolute;
+            flex-direction: column;
+            transform-origin: bottom left;
+            border-left: var(--theme-accent-width) solid var(--theme-brandColor);
+        }
+
+        #box1 {
+            font-size: 3vw;
+            font-family: 'BOLD';
+            padding: 0.1em 0.5em;
+            background: linear-gradient(270deg,
+                transparent 40%,
+                rgba(255, 255, 255, 0.3) 50%,
+                transparent 60%),
+                linear-gradient(to bottom,
+                    var(--theme-lite-color) 0%,
+                    var(--theme-dark-color) 100%);
+            color: white;
+            text-shadow: 0 0.1em 0.2em rgba(0, 0, 0, 0.8);
+            animation: DataDashShimmer 800ms ease-in 150ms;
+            background-size: 400% 100%, 100% 100%;
+            background-repeat: no-repeat;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            border-top-right-radius: 0.4em;
+        }
+
+        #details {
+            gap: 0; 
+            display: flex;
+            flex-direction: row;
+        }
+
+        #box3,
+        #box4 {
+            font-size: 2.0vw;
+            font-family: "REGU";
+            padding: 0.2em 0;
+            background: var(--theme-brandColor);
+            color: var(--theme-dark-color);
+            text-shadow: 0 0.05em 0.1em rgba(255, 255, 255, 0.3);
+        }
+
+        #box3 {
+            border-bottom-left-radius: 0.3em;
+        }
+
+        #box4 {
+            border-bottom-right-radius: 0.3em;
+            background: linear-gradient(135deg, 
+                var(--theme-brandColor) 60%, 
+                var(--theme-lite-color) 100%);
+        }
+
+        /* Unified layout - single subtitle box */
+        #unified-box {
+            font-size: 2.0vw;
+            font-family: "REGU";
+            padding: 0.2em 0.8em;
+            background: var(--theme-brandColor);
+            color: var(--theme-dark-color);
+            text-shadow: 0 0.05em 0.1em rgba(255, 255, 255, 0.3);
+            border-bottom-left-radius: 0.3em;
+            border-bottom-right-radius: 0.3em;
+            background: linear-gradient(135deg, 
+                var(--theme-brandColor) 60%, 
+                var(--theme-lite-color) 100%);
+        }
+
+        .split-mode #details {
+            display: flex;
+        }
+        
+        .split-mode #unified-box {
+            display: none;
+        }
+        
+        .unified-mode #details {
+            display: none;
+        }
+        
+        .unified-mode #unified-box {
+            display: block;
+        }
+
+        @keyframes DataDashShimmer {
+            0% { background-position: 0% 0% }
+            100% { background-position: 100% 0% }
+        }
+
+        #text2 {
+            padding: 0 0.8em;
+        }
+
+        #text3 {
+            padding-right: 0.8em;
+        }
+    </style>
+
+    <script>
+        let clipNone = "inset(0%   0% 0% 0%)";
+        let clipEast = "inset(0% 100% 0% 0%)";
+        let clipSout = "inset(0% 0% 100% 0%)";
+        
+        function runTemplateUpdate() {
+            // Update theme
+            e('DynamicTheme').href = e('f99').innerText;
+            
+            // Update main title
+            e('text1').innerHTML = htmlDecode(e('f0').innerText);
+            
+            // Get subtitle data
+            const subtitle1 = e('f1').innerText.trim();
+            const subtitle2 = e('f2').innerText.trim();
+            const layoutMode = e('f3').innerText.trim().toLowerCase();
+            
+            // Update subtitle content
+            e('text2').innerHTML = htmlDecode(subtitle1);
+            e('text3').innerHTML = htmlDecode(subtitle2);
+            
+            // Set layout mode
+            const gfxElement = e('gfx');
+            if (layoutMode === 'unified') {
+                gfxElement.className = 'unified-mode';
+                // Combine subtitles for unified display
+                const combinedText = [subtitle1, subtitle2].filter(t => t).join(' • ');
+                e('unified-text').innerHTML = htmlDecode(combinedText);
+            } else {
+                gfxElement.className = 'split-mode';
+            }
+            
+            // Show/hide elements based on content
+            e('text1').style.display = 'block';
+            e('text2').style.display = (subtitle1 !== '') ? 'block' : 'none';
+            e('text3').style.display = (subtitle2 !== '') ? 'block' : 'none';
+        }
+
+        function runAnimationIN() {
+            const layoutMode = e('f3').innerText.trim().toLowerCase();
+            let targets = ['#text1'];
+            
+            if (layoutMode === 'unified') {
+                targets.push('#unified-text');
+            } else {
+                targets.push('#text2', '#text3');
+            }
+            
+            var timeline = anime.timeline({
+                easing: 'easeOutCubic',
+                duration: 800
+            })
+            .add({
+                targets: '#gfx',
+                clipPath: [clipEast, clipNone],
+                opacity: [0, 1],
+            }, 0)
+            .add({
+                targets: targets,
+                translateX: ['-50%', '0%'],
+                opacity: [0, 1],
+                delay: anime.stagger(150)
+            }, 300);
+        }
+
+        function runAnimationOUT() {
+            const layoutMode = e('f3').innerText.trim().toLowerCase();
+            let subtitleTargets = layoutMode === 'unified' ? ['#unified-text'] : ['#text3', '#text2'];
+            
+            var timelineOut = anime.timeline({
+                easing: 'easeInCubic',
+                duration: 600
+            })
+            .add({
+                targets: ['#text1'],
+                translateX: { value: ['50%'] },
+            }, 0)
+            .add({
+                targets: subtitleTargets,
+                opacity: { value: 0, duration: 200, easing: 'linear'},
+                delay: anime.stagger(100)
+            }, 100)
+            .add({
+                targets: ['#gfx'],
+                clipPath: clipEast,
+                opacity: { value: 0, duration: 200, delay: 500},
+            }, 100);
+        }
+
+        // Helper functions
+        function e(id) {
+            return document.getElementById(id);
+        }
+
+        function htmlDecode(input) {
+            const doc = new DOMParser().parseFromString(input, "text/html");
+            return doc.documentElement.textContent;
+        }
+
+        // Update function for external control
+        function update(dataString) {
+            try {
+                const data = JSON.parse(dataString);
+                if (data.f0) e('f0').innerText = data.f0;
+                if (data.f1) e('f1').innerText = data.f1;
+                if (data.f2) e('f2').innerText = data.f2;
+                if (data.f3) e('f3').innerText = data.f3;
+                if (data.f99) e('f99').innerText = data.f99;
+                runTemplateUpdate();
+            } catch (error) {
+                console.error('Error updating template data:', error);
+            }
+        }
+
+        window.SPXGCTemplateDefinition = {
+            "description": "Enhanced Professional Lowerthird",
+            "playserver": "OVERLAY",
+            "playchannel": "1",
+            "playlayer": "5",
+            "webplayout": "5",
+            "out": "manual",
+            "dataformat": "json",
+            "uicolor": "3",
+            "DataFields": [
+                {
+                    "field": "f0",
+                    "ftype": "textfield",
+                    "title": "Name/Title",
+                    "value": "DataDash Expert"
+                },
+                {
+                    "field": "f1",
+                    "ftype": "textfield",
+                    "title": "Position/Subtitle 1",
+                    "value": "Security Architect"
+                },
+                {
+                    "field": "f2",
+                    "ftype": "textfield",
+                    "title": "Company/Subtitle 2",
+                    "value": "Fortinet Technologies"
+                },
+                {
+                    "field": "f3",
+                    "ftype": "dropdown",
+                    "title": "Layout Mode",
+                    "options": [
+                        {"value": "unified", "text": "Unified (Single Line)"},
+                        {"value": "split", "text": "Split (Two Lines)"}
+                    ],
+                    "value": "unified"
+                },
+                {
+                    "field": "f99",
+                    "ftype": "filelist",
+                    "title": "Theme",
+                    "assetfolder": "../../themes/",
+                    "extension": "css",
+                    "value": "../../themes/DataDash-CloudBlue.css"
+                }
+            ]
+        };
+    </script>
+</head>
+
+<body>
+    <div class="SPXWindow left">
+        <div id="logoLeft"></div>
+        <div id="gfx" class="unified-mode">
+            <div id="box1" class="darkOnLite"><span id="text1"></span></div>
+            
+            <!-- Split mode layout -->
+            <div id="details">
+                <div id="box3" class="liteOnColor">
+                    <span id="text2"></span>
+                </div>
+                <div id="box4" class="liteOnColor">
+                    <span id="text3"></span>
+                </div>
+            </div>
+            
+            <!-- Unified mode layout -->
+            <div id="unified-box" class="liteOnColor">
+                <span id="unified-text"></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="hiddenSpxData" data-info="Template data">
+        <div id="f0">DataDash Expert</div>
+        <div id="f1">Security Architect</div>
+        <div id="f2">Fortinet Technologies</div>
+        <div id="f3">unified</div>
+        <div id="f99">../../themes/DataDash-CloudBlue.css</div>
+    </div>
+</body>
+</html>

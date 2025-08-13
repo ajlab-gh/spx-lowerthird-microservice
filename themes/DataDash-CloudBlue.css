@@ -1,0 +1,248 @@
+:root {
+    /* DataDash Cloud Blue Theme - Fortinet Inspired */
+    --theme-lite-color: #307FE2;      /* Cloud Blue primary */
+    --theme-dark-color: #142850;      /* Dark blue for contrast */
+    --theme-brandColor: #C8DCFF;      /* Light blue accent */
+    --theme-tickerBack: white;
+
+    --theme-accent-width: 0.5vw;
+    --theme-ticker-height: 4.7vh;
+
+    --theme-viewport-padding-top: 4vw;
+    --theme-viewport-padding-sides: 3vw;
+    --theme-viewport-padding-bottom: 1vw;
+}
+
+@font-face { font-family: "LITE"; src: url("../fonts/EncodeSansSemiExpanded-Light.ttf");   }
+@font-face { font-family: "REGU"; src: url("../fonts/EncodeSansSemiExpanded-Regular.ttf"); }
+@font-face { font-family: "BOLD"; src: url("../fonts/EncodeSansSemiExpanded-Bold.ttf");    }
+@font-face { font-family: "BLAC"; src: url("../fonts/EncodeSansSemiExpanded-Black.ttf");   }
+
+#gfx {
+    border-bottom-left-radius: 1em;
+    bottom: 6.5vh !important;
+}
+
+#gfx.infoRight,
+#gfx.infoLeft {
+    border-radius: 0;
+    bottom: unset !important;
+}
+
+#box1 {
+    border-top-right-radius: 0.4em;
+}
+
+#text1,
+#text2,
+#text3 {
+    height: 100%;
+    color: white;
+    line-height: 1em;
+    font-family: 'REGU';
+    padding: 0 !important;
+    text-shadow: 0 0.1em 0.2em rgba(0, 0, 0, 0.8);
+}
+
+#text1 {
+    font-family: 'BOLD';
+    font-size: 1.1em;
+}
+
+#text3 {
+    font-family: 'LITE';
+    color: rgba(255, 255, 255, 0.9);
+}
+
+#box1,
+#box2,
+#box3,
+#box4 {
+    padding: 0.3em !important;
+}
+
+#text3 {
+    padding-right: 1.0em !important;
+}
+
+#rightInfo,
+#leftInfo,
+#title1,
+#box1 {
+    background:
+        linear-gradient(270deg,
+            transparent 40%,
+            rgba(255, 255, 255, 0.3) 50%,
+            transparent 60%),
+        linear-gradient(to bottom,
+            var(--theme-lite-color) 0%,
+            #1E5AB4 100%);  /* Cloud blue gradient */
+    animation: DataDashShimmer 800ms ease-in 150ms;
+    background-size: 400% 100%, 100% 100%;
+    background-repeat: no-repeat;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes DataDashShimmer {
+    0% {
+        background-position: 0% 0%
+    }
+    100% {
+        background-position: 100% 0%
+    }
+}
+
+/* DataDash Professional Styling */
+.right #gfx {
+    border-bottom-right-radius: 1em;
+}
+
+.right #box1 {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0.4em;
+    animation: DataDashShimmerR 800ms ease-in !important;
+}
+
+@keyframes DataDashShimmerR {
+    0% {
+        background-position: 100% 0%
+    }
+    100% {
+        background-position: 0% 0%
+    }
+}
+
+.right #details {
+    justify-content: flex-end;
+}
+
+.right #box1 {
+    padding-left: 1.5em !important;
+}
+
+.right #text1 {
+    padding-right: 0.1em !important;
+}
+
+.right #text2 {
+    padding: 0.2em 0.4em;
+    padding-left: 1.0em !important;
+}
+
+.right #text3 {
+    padding: 0.2em;
+    padding-right: 0.5em !important;
+}
+
+#title1 {
+    color: white;
+    font-size: 1.2em;
+    font-family: 'BOLD';
+    padding: 0.2em 1.5em;
+    border-radius: 0.5em;
+    justify-content: center;
+    border-bottom: 0.05em solid var(--theme-brandColor);
+}
+
+#title2 {
+    color: white;
+    font-size: 0.75em;
+    font-family: 'REGU';
+    text-shadow: 0 0 0.2em rgba(0, 0, 0, 0.8);
+    background-position: center center;
+    background-size: 100% 100%;
+    padding: 0.5em 2.0em;
+    border-radius: 0 0 0.5em 0.5em;
+    background-repeat: no-repeat;
+    background: linear-gradient(
+                    180deg,
+                    rgba(0,0,0,0.3) 0%,
+                    transparent 25%
+                ),
+                var(--theme-brandColor)
+    ;
+}
+
+#leftInfo {
+    font-family: 'BOLD';
+    font-size: 2.5vh;
+    color: white;
+    border-left: var(--theme-accent-width)
+                 solid 
+                 var(--theme-brandColor);
+    padding: 0.4em 1.0em;
+    text-transform: uppercase;
+}
+
+#rightInfo {
+    font-family: 'BOLD';
+    font-size: 2.5vh;
+    color: white;
+    border-right: var(--theme-accent-width)
+                 solid 
+                 var(--theme-brandColor);
+    padding: 0.4em 1.0em;
+    text-transform: uppercase;
+}
+
+/* DataDash Premium Glass Effect */
+#gfx::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 100%);
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+/* Ticker styling for DataDash */
+#gfx.ticker {
+    bottom: 0.5vh !important;
+}
+
+#tickerZone {
+    background-image:
+        linear-gradient(
+            180deg,
+            var(--theme-lite-color) 45%,
+            #1E5AB4 55%
+        );
+}
+
+#tickerZone > #headline {
+    font-size: 0.8em;
+    padding: 0 0.57em;
+    padding-top: 0.15em;
+    font-family: 'BOLD';
+    text-transform: uppercase;
+    color: white !important;
+    text-shadow: 0 0.1em 0.2em rgba(0, 0, 0, 0.7);  
+}
+
+#tickerZone > #headline::after {
+    content: "▶";
+    color: var(--theme-brandColor);
+    margin-left: 0.5em;
+    font-size: 1.2em;
+    line-height: 0.8em;
+    text-shadow: none;
+    animation: DataDashPulse 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes DataDashPulse {
+    0%   { opacity: 100% }
+    100% { opacity:  40% }
+}
+
+#tickerZone #tickerText {
+    font-size: 0.8em;
+    padding-top: 0.2em;
+    font-family: 'REGU' !important;
+    color: white;
+    text-shadow: 0 0 0.1em rgba(0, 0, 0, 0.5);  
+}

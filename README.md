@@ -1,136 +1,211 @@
-# SPX Lowerthird Microservice
+# Professional Lowerthird PNG Generator
 
-A reusable SPX Graphics-based microservice for generating professional broadcast-quality lowerthird graphics. Built on the open-source SPX Graphics platform with customizable color schemes and branding.
+🎬 **Generate professional lowerthird graphics as PNG sequences for video overlay**
 
-## Features
+A clean, simple tool for creating broadcast-quality lowerthird graphics with customizable text and professional color themes.
 
-- **Professional Broadcast Quality** - Built on SPX Graphics platform used by broadcasters
-- **Live HTML Graphics** - Real-time browser-source compatible lowerthirds
-- **Customizable Color Schemes** - Support for multiple brand color palettes
-- **OBS/vMix Integration** - Browser source compatibility for live streaming
-- **Reusable Templates** - Brand-agnostic templates with configurable outputs
+## ✨ Features
 
-## Supported Color Schemes
+- **Professional Quality**: Broadcast-grade animations and typography
+- **4 DataDash Themes**: Cloud Blue, Secure Red, SASE Purple, Connectivity Yellow
+- **Transparent PNGs**: Perfect for video overlay in any editor
+- **Customizable Text**: Name, position, company/topic fields
+- **30fps Output**: 150 frames (5 seconds) for smooth animation
 
-### DataDash (Fortinet-Inspired)
-- **Cloud Blue**: RGB(48, 127, 226) #307FE2
-- **Secure Red**: RGB(218, 41, 28) #DA291C  
-- **SASE Purple**: RGB(144, 99, 205) #9063CD
-- **Connectivity Yellow**: RGB(255, 185, 0) #FFB900
+## 🚀 Quick Start
 
-### Default Corporate
-- **Primary**: Professional blue/gray palette
-- **Secondary**: Complementary accent colors
-
-## Architecture
-
-Built on SPX Graphics Controller:
-- **NodeJS Server** - Web-based control interface
-- **HTML/CSS/JS Templates** - Professional web-based graphics
-- **Multi-layer Support** - 20+ simultaneous graphics layers
-- **Real-time Control** - Live updates without regeneration
-
-## Quick Start
-
-### Prerequisites
-- NodeJS (v14+)
-- npm
-- OBS Studio or compatible streaming software
-
-### Installation
+### 1. Install Dependencies
 ```bash
-# Clone repository
-git clone [repository-url]
-cd spx-lowerthird-microservice
-
-# Install SPX Graphics
-cd SPX-GC
 npm install
-
-# Start SPX server
-npm start
 ```
 
-### Usage
-1. Open SPX Graphics web interface (typically http://localhost:5000)
-2. Load lowerthird templates
-3. Configure brand colors and text
-4. Add browser source in OBS pointing to template URL
-
-## Template Customization
-
-Templates support configurable:
-- **Brand Colors** - CSS variable-based theming
-- **Logo/Branding** - SVG or image assets
-- **Typography** - Font family and sizing
-- **Animation Timing** - Professional motion graphics
-
-## Integration
-
-### OBS Studio
-```
-Add Browser Source:
-URL: http://localhost:5000/renderer/[template-id]
-Width: 1920
-Height: 1080
+### 2. Start HTTP Server
+```bash
+python3 -m http.server 8002
 ```
 
-### API Control
+### 3. Generate Your Lowerthird
+```bash
+node record-png-sequence.js
+```
+
+### 4. Find Your PNGs
+Your 150 PNG files will be in the `frames/` folder, ready for video editing!
+
+## ✏️ Customizing Your Text
+
+Edit the text in `record-png-sequence.js` around line 54:
+
 ```javascript
-// Update lowerthird text
-fetch('http://localhost:5000/api/v1/updateItemData', {
-  method: 'POST',
-  body: JSON.stringify({
-    rundownID: 'project1',
-    itemID: 'item1',
-    data: {
-      title: 'Speaker Name',
-      subtitle: 'Company Position'
-    }
-  })
+const testData = {
+    f0: "Your Name Here",           // Main title
+    f1: "Your Position",            // Subtitle line 1  
+    f2: "Your Company",             // Subtitle line 2
+    f99: "themes/DataDash-CloudBlue.css"  // Theme file
+};
+```
+
+**Example:**
+```javascript
+const testData = {
+    f0: "Sarah Johnson",
+    f1: "Senior Security Engineer", 
+    f2: "Fortinet Technologies",
+    f99: "themes/DataDash-SecureRed.css"
+};
+```
+
+## 🎨 Available Themes
+
+### Cloud Blue (Default)
+```javascript
+f99: "themes/DataDash-CloudBlue.css"
+```
+- **Use for**: General content, cloud security topics
+- **Colors**: Professional blue gradient (#307FE2)
+
+### Secure Red
+```javascript
+f99: "themes/DataDash-SecureRed.css"
+```
+- **Use for**: Security alerts, threat intelligence
+- **Colors**: Bold red gradient (#DA291C)
+
+### SASE Purple
+```javascript
+f99: "themes/DataDash-SASE-Purple.css"
+```
+- **Use for**: SASE, SD-WAN, technical deep dives
+- **Colors**: Modern purple gradient (#9063CD)
+
+### Connectivity Yellow
+```javascript
+f99: "themes/DataDash-Connectivity-Yellow.css"
+```
+- **Use for**: Networking content, connectivity topics
+- **Colors**: Bright yellow gradient (#FFB900)
+
+## 🎥 Using in Video Editors
+
+### Import PNG Sequence
+
+**Adobe Premiere Pro:**
+1. File → Import → Select first frame (`frame-0000.png`)
+2. Check "Image Sequence" 
+3. Set frame rate to 30fps
+4. Drag to timeline above your video
+
+**DaVinci Resolve:**
+1. Import all PNG files to Media Pool
+2. Right-click → "Change Clip Frame Rate" → 30fps
+3. Drag to timeline as overlay
+
+**Camtasia:**
+1. Import all PNGs to library
+2. Drag to timeline above your video
+3. Camtasia auto-detects sequence
+
+### FFmpeg Command Line
+```bash
+# Create MP4 from PNG sequence
+ffmpeg -framerate 30 -i frames/frame-%04d.png -c:v libx264 -pix_fmt yuv420p lowerthird.mp4
+
+# Overlay on existing video  
+ffmpeg -i your-video.mp4 -i lowerthird.mp4 -filter_complex "[0:v][1:v] overlay=0:H-h-50" output.mp4
+```
+
+## 🛠️ Advanced Customization
+
+### Creating Custom Themes
+
+1. Copy an existing theme file:
+```bash
+cp themes/DataDash-CloudBlue.css themes/MyCustom-Theme.css
+```
+
+2. Edit the CSS variables:
+```css
+:root {
+    --theme-lite-color: #YOUR_PRIMARY_COLOR;
+    --theme-dark-color: #YOUR_DARK_COLOR;
+    --theme-brandColor: #YOUR_ACCENT_COLOR;
+}
+```
+
+3. Use your theme:
+```javascript
+f99: "themes/MyCustom-Theme.css"
+```
+
+### Modifying Animation Timing
+
+Edit `lowerthird.html` around line 87 to adjust animation speeds:
+
+```javascript
+var timeline = anime.timeline({
+    easing: 'easeOutCubic',
+    duration: 800  // Animation speed in milliseconds
 })
 ```
 
-## Development
+### Changing Fonts
 
-### Project Structure
+Replace font files in the `fonts/` folder and update CSS references in your theme files.
+
+## 📁 Project Structure
+
 ```
-spx-lowerthird-microservice/
-├── SPX-GC/                    # SPX Graphics core
-├── templates/                 # Custom lowerthird templates
-│   ├── datadash/             # DataDash branded templates
-│   └── corporate/            # Generic corporate templates
-├── assets/                   # Logos, fonts, images
-└── config/                   # Color schemes and presets
+professional-lowerthird/
+├── README.md              # This file
+├── package.json           # Dependencies
+├── record-png-sequence.js # Main generator script
+├── lowerthird.html        # Template file
+├── themes/                # Color themes
+│   ├── DataDash-CloudBlue.css
+│   ├── DataDash-SecureRed.css
+│   ├── DataDash-SASE-Purple.css
+│   └── DataDash-Connectivity-Yellow.css
+├── fonts/                 # Typography assets
+├── css/                   # Base styles
+├── js/                    # Animation libraries
+└── frames/                # Generated PNGs (after running)
 ```
 
-### Creating New Templates
-1. Add HTML template in `templates/[brand]/`
-2. Define template.json with fields and settings
-3. Add CSS with color scheme variables
-4. Test in SPX Graphics interface
+## 🔧 Technical Specifications
 
-## Deployment
+- **Output**: 150 PNG files, 1920x1080 resolution
+- **Duration**: 5 seconds at 30fps
+- **Background**: Transparent for clean overlay
+- **Animation**: Professional easing curves
+- **Browser**: Uses Puppeteer (Chrome-based rendering)
 
-### Docker (Recommended)
+## 🆘 Troubleshooting
+
+**"Cannot find module" error:**
 ```bash
-docker build -t spx-lowerthird-microservice .
-docker run -p 5000:5000 spx-lowerthird-microservice
+npm install
 ```
 
-### Production Setup
-- Reverse proxy for HTTPS
-- Process management (PM2)
-- Database for persistent projects
+**Server won't start:**
+```bash
+# Try different port
+python3 -m http.server 8003
+# Update port in record-png-sequence.js line 12
+```
 
-## Technical Specifications
+**Blank/black PNGs:**
+- Check that HTTP server is running on correct port
+- Verify theme file path is correct
+- Ensure all dependencies are installed
 
-- **Output**: 1920x1080 HD browser graphics
-- **Formats**: HTML5 with alpha transparency
-- **Compatibility**: OBS, vMix, CasparCG, Wirecast
-- **Performance**: Real-time rendering, no pre-generation
-- **Control**: Web-based interface + REST API
+**Animation too fast/slow:**
+- Edit duration in `lowerthird.html` animation timeline
+- Adjust frame count in `record-png-sequence.js`
 
-## License
+## 📄 License
 
-Built on SPX Graphics (MIT License). See SPX-GC/LICENSE for details.
+MIT License - feel free to customize and use for your projects!
+
+---
+
+**Need help?** Check the project issues or create a new one with your question.

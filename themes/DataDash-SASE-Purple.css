@@ -1,0 +1,102 @@
+:root {
+    /* DataDash SASE Purple Theme - Fortinet Inspired */
+    --theme-lite-color: #9063CD;      /* SASE Purple primary */
+    --theme-dark-color: #281E50;      /* Dark purple for contrast */
+    --theme-brandColor: #C8B4E6;      /* Light purple accent */
+    --theme-tickerBack: white;
+
+    --theme-accent-width: 0.5vw;
+    --theme-ticker-height: 4.7vh;
+
+    --theme-viewport-padding-top: 4vw;
+    --theme-viewport-padding-sides: 3vw;
+    --theme-viewport-padding-bottom: 1vw;
+}
+
+@font-face { font-family: "LITE"; src: url("../fonts/EncodeSansSemiExpanded-Light.ttf");   }
+@font-face { font-family: "REGU"; src: url("../fonts/EncodeSansSemiExpanded-Regular.ttf"); }
+@font-face { font-family: "BOLD"; src: url("../fonts/EncodeSansSemiExpanded-Bold.ttf");    }
+@font-face { font-family: "BLAC"; src: url("../fonts/EncodeSansSemiExpanded-Black.ttf");   }
+
+#gfx {
+    border-bottom-left-radius: 1em;
+    bottom: 6.5vh !important;
+}
+
+#box1 {
+    border-top-right-radius: 0.4em;
+}
+
+#text1,
+#text2,
+#text3 {
+    height: 100%;
+    color: white;
+    line-height: 1em;
+    font-family: 'REGU';
+    padding: 0 !important;
+    text-shadow: 0 0.1em 0.2em rgba(0, 0, 0, 0.8);
+}
+
+#text1 {
+    font-family: 'BOLD';
+    font-size: 1.1em;
+}
+
+#text3 {
+    font-family: 'LITE';
+    color: rgba(255, 255, 255, 0.9);
+}
+
+#box1,
+#box2,
+#box3,
+#box4 {
+    padding: 0.3em !important;
+}
+
+#rightInfo,
+#leftInfo,
+#title1,
+#box1 {
+    background:
+        linear-gradient(270deg,
+            transparent 40%,
+            rgba(255, 255, 255, 0.3) 50%,
+            transparent 60%),
+        linear-gradient(to bottom,
+            var(--theme-lite-color) 0%,
+            #644696 100%);  /* SASE purple gradient */
+    animation: DataDashShimmer 800ms ease-in 150ms;
+    background-size: 400% 100%, 100% 100%;
+    background-repeat: no-repeat;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes DataDashShimmer {
+    0% { background-position: 0% 0% }
+    100% { background-position: 100% 0% }
+}
+
+#leftInfo {
+    font-family: 'BOLD';
+    font-size: 2.5vh;
+    color: white;
+    border-left: var(--theme-accent-width) solid var(--theme-brandColor);
+    padding: 0.4em 1.0em;
+    text-transform: uppercase;
+}
+
+#gfx::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 100%);
+    border-radius: inherit;
+    pointer-events: none;
+}
