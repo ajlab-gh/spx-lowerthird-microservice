@@ -50,7 +50,7 @@ async function recordPNGSequence() {
         
         console.log('🎨 Setting up test data...');
         
-        // Trigger the lowerthird animation
+        // Setup lowerthird data but don't animate yet
         await page.evaluate(() => {
             const testData = {
                 f0: "Tech Expert",
@@ -67,10 +67,12 @@ async function recordPNGSequence() {
                 window.runTemplateUpdate();
             }
             
-            // Trigger animation IN
-            if (window.runAnimationIN) {
-                window.runAnimationIN();
-            }
+            // Store animation function for later
+            window.delayedAnimationStart = () => {
+                if (window.runAnimationIN) {
+                    window.runAnimationIN();
+                }
+            };
         });
         
         console.log('📸 Recording PNG sequence...');
@@ -78,8 +80,19 @@ async function recordPNGSequence() {
         // Record animation frames (5 seconds at 30fps = 150 frames)
         const totalFrames = 150;
         const frameDuration = 1000 / 30; // 30fps
+        const delayFrames = 60; // 2 second delay (60 frames at 30fps)
         
         for (let i = 0; i < totalFrames; i++) {
+            // Trigger animation after delay
+            if (i === delayFrames) {
+                console.log('🎬 Starting lowerthird animation...');
+                await page.evaluate(() => {
+                    if (window.delayedAnimationStart) {
+                        window.delayedAnimationStart();
+                    }
+                });
+            }
+            
             const frameNumber = i.toString().padStart(4, '0');
             const framePath = path.join(framesDir, `frame-${frameNumber}.png`);
             

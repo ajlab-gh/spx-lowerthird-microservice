@@ -169,20 +169,22 @@
             }
             
             var timeline = anime.timeline({
-                easing: 'easeOutCubic',
-                duration: 800
+                easing: 'easeOutQuart',
+                duration: 1500
             })
             .add({
                 targets: '#gfx',
                 clipPath: [clipEast, clipNone],
                 opacity: [0, 1],
+                duration: 1200
             }, 0)
             .add({
                 targets: targets,
-                translateX: ['-50%', '0%'],
+                translateX: ['-100%', '0%'],
                 opacity: [0, 1],
-                delay: anime.stagger(150)
-            }, 300);
+                delay: anime.stagger(200),
+                duration: 1000
+            }, 400);
         }
 
         function runAnimationOUT() {
@@ -190,23 +192,24 @@
             let subtitleTargets = layoutMode === 'unified' ? ['#unified-text'] : ['#text3', '#text2'];
             
             var timelineOut = anime.timeline({
-                easing: 'easeInCubic',
-                duration: 600
+                easing: 'easeInQuart',
+                duration: 1000
             })
             .add({
                 targets: ['#text1'],
-                translateX: { value: ['50%'] },
+                translateX: { value: ['100%'], duration: 800 },
             }, 0)
             .add({
                 targets: subtitleTargets,
-                opacity: { value: 0, duration: 200, easing: 'linear'},
-                delay: anime.stagger(100)
-            }, 100)
+                opacity: { value: 0, duration: 400, easing: 'linear'},
+                translateX: { value: ['50%'], duration: 600 },
+                delay: anime.stagger(150)
+            }, 200)
             .add({
                 targets: ['#gfx'],
                 clipPath: clipEast,
-                opacity: { value: 0, duration: 200, delay: 500},
-            }, 100);
+                opacity: { value: 0, duration: 600, delay: 200},
+            }, 400);
         }
 
         // Helper functions
